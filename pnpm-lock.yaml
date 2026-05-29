@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      esncard:
+        specifier: ^0.0.2
+        version: 0.0.2
       next:
         specifier: 16.2.6
         version: 16.2.6(@babel/core@7.29.7)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -1085,6 +1088,9 @@ packages:
     peerDependenciesMeta:
       jiti:
         optional: true
+
+  esncard@0.0.2:
+    resolution: {integrity: sha512-RZiWhoSkPvu3bHlpzAdixFZ41uVZm4LWSOmdY8DQiCR30bf8KqXWOzJkS51nqLrZIVY87fSCGsasOvxCpet3lg==}
 
   espree@10.4.0:
     resolution: {integrity: sha512-j6PAQ2uUr79PZhBjP5C5fhl8e39FmRnOjsD5lGnWrFU8i2G776tBK7+nP8KuQUTTyAZUwfQqXAgrVH5MbH9CYQ==}
@@ -3110,6 +3116,8 @@ snapshots:
       jiti: 2.7.0
     transitivePeerDependencies:
       - supports-color
+
+  esncard@0.0.2: {}
 
   espree@10.4.0:
     dependencies:
