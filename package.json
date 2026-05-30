@@ -1,5 +1,7 @@
 {
   "name": "esncard-buddy",
+  "author": "Charalampos Fanoulis <yo@fanoulis.dev>",
+  "license": "MIT",
   "version": "0.1.0",
   "private": true,
   "scripts": {
