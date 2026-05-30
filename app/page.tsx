@@ -14,117 +14,144 @@ export default function Home() {
   const [cardId, setCardId] = useState("");
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-18">
-      <form action={verifyCardAction} className="flex flex-col gap-4 mb-4">
-        <label htmlFor="cardid">ESNcard number:</label>
-        <input
-          type="text"
-          id="cardid"
-          name="cardid"
-          value={cardId}
-          onChange={(e) => setCardId(e.target.value)}
-          className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <div>
-          <button
-            disabled={pending}
-            type="submit"
-            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 disabled:bg-gray-400 mr-2"
-          >
-            Check &gt;
-          </button>
-          <button
-            className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 disabled:bg-gray-400"
-            disabled={pending}
-            type="button"
-            onClick={() => setCameraScanning((prev) => !prev)}
-          >
-            Toggle camera
-          </button>
-        </div>
-      </form>
-      {cameraScanning && (
-        <Scanner
-          styles={{
-            container: {
-              width: 400,
-              height: 400,
-            },
-          }}
-          onScan={([result]: IDetectedBarcode[]) => {
-            setCardId(result.rawValue);
-            setCameraScanning(false);
-          }}
-          paused={!cameraScanning}
-          onError={(error) => console.error(error)}
-          components={{
-            finder: true,
-            onOff: false,
-            torch: false,
-            zoom: false,
-          }}
-        />
-      )}
-      {verificationResult.status !== "idle" && (
-        <div className="mt-4 p-4 border border-gray-300 rounded-md">
-          <h1 className="text-xl font-bold mb-2">Card Information</h1>
-          <p className="mb-1">Status: {verificationResult.status}</p>
-          {verificationResult.status === "active" && (
-            <>
-              <div className="mb-4">
-                <p>Card ID: {(verificationResult as ESNcard).code || ""}</p>
-                <p>
-                  Expiration date:{" "}
-                  {(
-                    verificationResult as ESNcard
-                  ).expirationDate.toDateString() || ""}
-                </p>
-                <p>
-                  Issued by:{" "}
-                  {`${
-                    SectionCodeMapping[
-                      (verificationResult as ESNcard)
-                        .sectionCode as keyof typeof SectionCodeMapping
-                    ]
-                  } (${(verificationResult as ESNcard).sectionCode})`}
-                </p>
-              </div>
-            </>
-          )}
-          {verificationResult.status === ESNcardStatus.AVAILABLE && (
-            <>
-              <p className="text-sm italic mb-4">
-                Hint: This card has not been activated on esncard.org -
-                activation is required to use online offers (&amp; this tool).{" "}
-                <br /> You may accept this card based on the information within
-                it, but we recommend asking the holder to activate it to ensure
-                acceptance.
-              </p>
-            </>
-          )}
-          {verificationResult.status === "fail" && (
-            <>
-              <p className="text-sm italic mb-4">
-                This card number is invalid or has been removed from the ESNcard
-                system. <br /> Double-check the number or contact the issuing
-                section on the card for more information.
-              </p>
-            </>
-          )}
-
-          {verificationResult.status !== "fail" && (
+    <>
+      <main className="flex flex-col items-center p-18 h-[93vh]">
+        {/* "Oh @cfanoulis, where does 93 come from?" - idk, I tried random numbers and that one stuck*/}
+        <form action={verifyCardAction} className="flex flex-col gap-4 mb-4">
+          <label htmlFor="cardid">ESNcard number:</label>
+          <input
+            type="text"
+            id="cardid"
+            name="cardid"
+            value={cardId}
+            onChange={(e) => setCardId(e.target.value)}
+            className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <div>
+            <button
+              disabled={pending}
+              type="submit"
+              className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 disabled:bg-gray-400 mr-2"
+            >
+              Check &gt;
+            </button>
             <button
               className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 disabled:bg-gray-400"
               disabled={pending}
               type="button"
-              onClick={() => alert("Yippee!")}
+              onClick={() => setCameraScanning((prev) => !prev)}
             >
-              10% off on menu items - Record redemption &gt;
+              Toggle camera
             </button>
-          )}
-        </div>
-      )}
-    </main>
+          </div>
+        </form>
+        {cameraScanning && (
+          <Scanner
+            styles={{
+              container: {
+                width: 400,
+                height: 400,
+              },
+            }}
+            onScan={([result]: IDetectedBarcode[]) => {
+              setCardId(result.rawValue);
+              setCameraScanning(false);
+            }}
+            paused={!cameraScanning}
+            onError={(error) => console.error(error)}
+            components={{
+              finder: true,
+              onOff: false,
+              torch: false,
+              zoom: false,
+            }}
+          />
+        )}
+        {verificationResult.status !== "idle" && (
+          <div className="mt-4 p-4 border border-gray-300 rounded-md">
+            <h1 className="text-xl font-bold mb-2">Card Information</h1>
+            <p className="mb-1">Status: {verificationResult.status}</p>
+            {verificationResult.status === "active" && (
+              <>
+                <div className="mb-4">
+                  <p>Card ID: {(verificationResult as ESNcard).code || ""}</p>
+                  <p>
+                    Expiration date:{" "}
+                    {(
+                      verificationResult as ESNcard
+                    ).expirationDate.toDateString() || ""}
+                  </p>
+                  <p>
+                    Issued by:{" "}
+                    {`${
+                      SectionCodeMapping[
+                        (verificationResult as ESNcard)
+                          .sectionCode as keyof typeof SectionCodeMapping
+                      ]
+                    } (${(verificationResult as ESNcard).sectionCode})`}
+                  </p>
+                </div>
+              </>
+            )}
+            {verificationResult.status === ESNcardStatus.AVAILABLE && (
+              <>
+                <p className="text-sm italic mb-4">
+                  Hint: This card has not been activated on esncard.org -
+                  activation is required to use online offers (&amp; this tool).{" "}
+                  <br /> You may accept this card based on the information
+                  within it, but we recommend asking the holder to activate it
+                  to ensure acceptance.
+                </p>
+              </>
+            )}
+            {verificationResult.status === "fail" && (
+              <>
+                <p className="text-sm italic mb-4">
+                  This card number is invalid or has been removed from the
+                  ESNcard system. <br /> Double-check the number or contact the
+                  issuing section on the card for more information.
+                </p>
+              </>
+            )}
+
+            {verificationResult.status !== "fail" && (
+              <button
+                className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 disabled:bg-gray-400"
+                disabled={pending}
+                type="button"
+                onClick={() => alert("Yippee!")}
+              >
+                10% off on menu items - Record redemption &gt;
+              </button>
+            )}
+          </div>
+        )}
+      </main>
+      <footer className="flex flex-col items-center justify-center p-4 self-end text-xs">
+        <p className="mb-0.5">
+          redeeming as{" "}
+          <span className="font-semibold">CookieMan Ag. Sofias</span> - not you?{" "}
+          <button
+            className="text-gray-500 underline hover:italic"
+            onClick={() =>
+              alert("Boo! You;re logged out. Feature not implemented yet.")
+            }
+          >
+            log out
+          </button>
+        </p>
+        <p>
+          Made with 🔥 by cfanoulis -
+          <a
+            href="https://github.com/cfanoulis/esncard-buddy"
+            target="_blank"
+            className="text-gray-500 underline hover:italic ml-1"
+          >
+            fully open-source!
+          </a>
+        </p>
+      </footer>
+    </>
   );
 }
 
